@@ -38,14 +38,17 @@ struct Point {
 class TriangleService
 {
 public:
-	TriangleService(std::vector<Point> points, std::vector<Point> reversed): points_(points.data()), reversed_(reversed.data()) {}
+	TriangleService(std::vector<Point> points, std::vector<Point> reversed) : points_(points.data()), reversed_(reversed.data()) {}
 
-	int* operator()(const blocked_range<size_t > &r) const
+	Point* operator()(const blocked_range<size_t > &r) const
 	{
 		for (size_t i = r.begin(); i < r.end(); i++)
 		{
 			reversed_[i] = T(points_[i]);
+			cout << "X" << i + 1 << " : " << reversed_[i].x
+				<< endl << "Y" << i + 1 << " : " << reversed_[i].y << endl;
 		}
+		return reversed_;
 	}
 	double D(Point X) const
 	{
@@ -77,7 +80,8 @@ Point T(Point X)
 
 int main()
 {
-	vector<Point> points(3), vector<Point> pointsReversed(3);
+	vector<Point> points(3);
+	vector<Point> pointsReversed(3);
 	Timer time;
 	int num = 3;
 	cout << "Enter triangle vertices:\n";
@@ -106,5 +110,7 @@ int main()
 	task_scheduler_init init(3);
 	parallel_for(blocked_range<size_t>(0, num), TriangleService(points, pointsReversed), auto_partitioner());
 	time.Stop();
+	cout << "\nParalel-thread time: " << time.elapsedMilliseconds() << endl;
+
 
 }
