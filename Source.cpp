@@ -12,9 +12,6 @@
 #include <math.h>
 using namespace tbb;
 using namespace std;
-
-void printPoints(int num, std::vector<Point> &pointsReversed);
-
 class Timer
 {
 public:
@@ -51,15 +48,12 @@ public:
 		}
 		return reversed_;
 	}
-	double D(Point X) const
-	{
-		return (X.x - X.y) / 2;
-	}
-	Point T(Point X) const
+	
+	Point T(Point X)const
 	{
 		Point X1;
-		X1.x = 2 * D(X) - X.x;
-		X1.y = -2 * D(X) - X.y;
+		X1.x = -X.x;
+		X1.y = X.y;
 		return X1;
 	}
 
@@ -67,15 +61,12 @@ private:
 	Point *const points_;
 	Point *const reversed_;
 };
-double D(Point X)
-{
-	return (X.x - X.y) / 2;
-}
+
 Point T(Point X)
 {
 	Point X1;
-	X1.x = 2 * D(X) - X.x;
-	X1.y = -2 * D(X) - X.y;
+	X1.x = -X.x;
+	X1.y = X.y;
 	return X1;
 }
 
@@ -105,6 +96,7 @@ int main()
 	time.Start();
 	cout << "New triangle vertices: " << endl;
 	printPoints(num, pointsReversed);
+
 
 	time.Start();
 	task_scheduler_init init(3);
