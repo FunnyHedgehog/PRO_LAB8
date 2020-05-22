@@ -12,6 +12,9 @@
 #include <math.h>
 using namespace tbb;
 using namespace std;
+
+void printPoints(int num, std::vector<Point> &pointsReversed);
+
 class Timer
 {
 public:
