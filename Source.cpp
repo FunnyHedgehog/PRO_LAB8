@@ -45,8 +45,6 @@ public:
 		for (size_t i = r.begin(); i < r.end(); i++)
 		{
 			reversed_[i] = T(points_[i]);
-			cout << "X" << i + 1 << " : " << reversed_[i].x
-				<< endl << "Y" << i + 1 << " : " << reversed_[i].y << endl;
 		}
 		return reversed_;
 	}
@@ -78,6 +76,8 @@ Point T(Point X)
 	return X1;
 }
 
+void printPoints(int num, std::vector<Point> &pointsReversed);
+
 int main()
 {
 	vector<Point> points(3);
@@ -101,16 +101,21 @@ int main()
 	cout << "\nMono-thread time: " << time.elapsedMilliseconds() << endl;
 	time.Start();
 	cout << "New triangle vertices: " << endl;
-	for (int i = 0; i < num; i++)
-	{
-		cout << "X" << i + 1 << " : " << pointsReversed[i].x << endl << "Y" << i + 1 << " : " << pointsReversed[i].y << endl;
-	}
+	printPoints(num, pointsReversed);
 
 	time.Start();
 	task_scheduler_init init(3);
 	parallel_for(blocked_range<size_t>(0, num), TriangleService(points, pointsReversed), auto_partitioner());
 	time.Stop();
+	printPoints(num, pointsReversed);
 	cout << "\nParalel-thread time: " << time.elapsedMilliseconds() << endl;
 
+}
 
+void printPoints(int num, std::vector<Point> &pointsReversed)
+{
+	for (int i = 0; i < num; i++)
+	{
+		cout << "X" << i + 1 << " : " << pointsReversed[i].x << endl << "Y" << i + 1 << " : " << pointsReversed[i].y << endl;
+	}
 }
